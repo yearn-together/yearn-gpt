@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from "react";
-import { Dialog, Menu, Transition } from "@headlessui/react";
+import { Dialog, Transition } from "@headlessui/react";
 import {
   Bars3BottomLeftIcon,
   XMarkIcon,
@@ -15,7 +15,6 @@ import api from "../services/api";
 import { Link, useParams, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { Spin, Tooltip } from "antd";
-import Avatar from "../components/Common/Avatar";
 import { useQuery } from "@tanstack/react-query";
 import { ApplicationMenu } from "./ApplicationMenu";
 
