@@ -1,0 +1,44 @@
+version: "3.9"
+
+services:
+  yearn-gpt:
+    build:
+      context: .
+      dockerfile: Dockerfile.optimized
+    container_name: yearn-gpt
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgres://postgres:postgres@yearn-gpt-pg:5432/yearn_gpt?connection_limit=15&pool_timeout=0
+      DB_REDIS_URL: redis://redis:6379
+    env_file:
+      - .env
+    depends_on:
+      - yearn-gpt-pg
+      - redis
+    volumes:
+      - .uploads:/app/uploads
+
+  yearn-gpt-pg:
+    image: postgres:15
+    container_name: yearn-gpt-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: yearn_gpt
+    volumes:
+      - .postgres:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7-alpine
+    container_name: yearn-gpt-redis
+    restart: unless-stopped
+    volumes:
+      - .redis:/data
+    ports:
+      - "6379:6379"
